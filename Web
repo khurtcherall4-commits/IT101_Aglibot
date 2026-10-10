@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WasteWise - Waste Management System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            margin: 0;
+            background: #f1f6f8;
+            color: #263b35;
+        }
+        
+        .container {
+            display: flex;
+            width: 850px;
+            max-width: 95%;
+            min-height: 480px;
+            margin: 50px auto;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px #00000015;
+        }
+        /* LEFT SIDE */
+        
+        .left {
+            width: 40%;
+            background: #006747;
+            color: white;
+            padding: 30px;
+        }
+        
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 45px;
+        }
+        
+        .left h2 {
+            font-size: 27px;
+            line-height: 1.2;
+        }
+        
+        .left p {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .truck {
+            text-align: center;
+            font-size: 75px;
+            margin: 25px 0;
+        }
+        
+        .features {
+            font-size: 12px;
+            line-height: 2;
+        }
+        /* RIGHT SIDE */
+        
+        .right {
+            width: 60%;
+            padding: 35px;
+        }
+        
+        .form {
+            max-width: 330px;
+            margin: 30px auto;
+        }
+        
+        .form h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+        
+        .form p {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 22px;
+        }
+        
+        label {
+            display: block;
+            font-size: 12px;
+            margin-top: 14px;
+            margin-bottom: 6px;
+        }
+        
+        input,
+        select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #d7e0dc;
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        input:focus,
+        select:focus {
+            border-color: #00875a;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 4px;
+            background: #00875a;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background: #006747;
+        }
+        
+        .links {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 18px;
+        }
+        
+        a {
+            color: #00875a;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page:target {
+            display: block;
+        }
+        
+        body:not(:has(.page:target)) #login {
+            display: block;
+        }
+        
+        @media (max-width: 650px) {
+            .container {
+                flex-direction: column;
+                margin: 20px auto;
+            }
+            .left,
+            .right {
+                width: 100%;
+            }
+            .left {
+                padding: 25px;
+            }
+            .logo {
+                margin-bottom: 20px;
+            }
+            .truck {
+                font-size: 50px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- LEFT PANEL -->
+        <div class="left">
+
+            <h2>Better waste management starts here.</h2>
+
+            <p>
+                Manage garbage collection and help create a cleaner and greener community.
+            </p>
+
+
+            <div class="features">
+                ✓ Organized waste collection<br> ✓ Monitor garbage truck operations<br> ✓ Manage schedules and routes<br> ✓ Keep collection records
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="right">
+
+            <!-- LOGIN PAGE -->
+            <div class="page" id="login">
+                <div class="form">
+                    <h2>Welcome Back!</h2>
+                    <p>Log in to your WasteWise account.</p>
+
+                    <form action="#login">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="Enter your email" required>
+
+                        <label>Password</label>
+                        <input type="password" placeholder="Enter your password" required>
+
+                        <div class="links" style="text-align:right;">
+                            <a href="#forgot">Forgot Password?</a>
+                        </div>
+
+                        <button type="submit">Log In</button>
+                    </form>
+
+                    <div class="links">
+                        Don't have an account?
+                        <a href="#register">Create Account</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CREATE ACCOUNT PAGE -->
+            <div class="page" id="register">
+                <div class="form">
+                    <h2>Create Your Account</h2>
+                    <p>Join WasteWise to manage waste collection.</p>
+
+                    <form action="#register">
+                        <label>Full Name</label>
+                        <input type="text" placeholder="Enter your full name" required>
+
+                        <label>Email Address</label>
+                        <input type="email" placeholder="Enter your email" required>
+
+                        <label>Username</label>
+                        <input type="text" placeholder="Choose a username" required>
+
+                        <label>Password</label>
+                        <input type="password" placeholder="Create a password" required>
+
+                        <label>Confirm Password</label>
+                        <input type="password" placeholder="Confirm your password" required>
+
+                        <button type="submit">Create Account</button>
+                    </form>
+
+                    <div class="links">
+                        Already have an account?
+                        <a href="#login">Log In</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FORGOT PASSWORD PAGE -->
+            <div class="page" id="forgot">
+                <div class="form">
+                    <h2>Forgot Password?</h2>
+                    <p>Enter your email to request a password reset.</p>
+
+                    <form action="#reset">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="Enter your registered email" required>
+
+                        <button type="submit">Reset Password</button>
+                    </form>
+
+                    <div class="links">
+                        <a href="#login">← Back to Login</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESET PASSWORD PAGE -->
+            <div class="page" id="reset">
+                <div class="form">
+                    <h2>Set a New Password</h2>
+                    <p>Enter your new password below.</p>
+
+                    <form action="#login">
+                        <label>New Password</label>
+                        <input type="password" placeholder="Enter new password" required>
+
+                        <label>Confirm New Password</label>
+                        <input type="password" placeholder="Confirm new password" required>
+
+                        <button type="submit">Update Password</button>
+                    </form>
+
+                    <div class="links">
+                        <a href="#login">← Back to Login</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>
