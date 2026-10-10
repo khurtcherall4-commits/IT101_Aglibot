@@ -1,0 +1,1058 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WasteWise Management System</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    background: #f2f6f8;
+    color: #203b37;
+    font-size: 13px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 14px;
+    background: #00875a;
+    color: white;
+}
+
+button:hover {
+    background: #006747;
+}
+
+input, select {
+    padding: 10px;
+    border: 1px solid #dce5e7;
+    border-radius: 4px;
+    background: white;
+    outline: none;
+}
+
+input:focus, select:focus {
+    border-color: #00875a;
+}
+
+/* PAGE NAVIGATION */
+.page {
+    display: none;
+}
+
+.page:target {
+    display: block;
+}
+
+body:not(:has(.page:target)) #login {
+    display: block;
+}
+
+/* LOGIN DESIGN */
+.auth {
+    display: flex;
+    max-width: 850px;
+    min-height: 480px;
+    margin: 40px auto;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.auth-left {
+    width: 40%;
+    padding: 30px;
+    background: #006747;
+    color: white;
+}
+
+.auth-left h1 {
+    font-size: 28px;
+    margin-top: 50px;
+}
+
+.auth-left .truck-art {
+    font-size: 65px;
+    text-align: center;
+    margin: 30px 0;
+}
+
+.auth-right {
+    width: 60%;
+    padding: 35px;
+}
+
+.auth-form {
+    max-width: 330px;
+    margin: 30px auto;
+}
+
+.auth-form h2 {
+    font-size: 22px;
+}
+
+.auth-form input {
+    width: 100%;
+    margin: 7px 0 12px;
+}
+
+.auth-form button {
+    width: 100%;
+    margin-top: 12px;
+}
+
+.auth-form p, .auth-form .links {
+    color: #71817e;
+    font-size: 12px;
+}
+
+.links {
+    margin-top: 18px;
+    text-align: center;
+}
+
+.links a {
+    color: #00875a;
+}
+
+/* DASHBOARD LAYOUT */
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 205px;
+    flex-shrink: 0;
+    background: #005b43;
+    color: #d7eee6;
+    display: flex;
+    flex-direction: column;
+}
+
+.brand {
+    padding: 23px 20px;
+    font-size: 19px;
+    font-weight: bold;
+    color: white;
+}
+
+.menu-title {
+    padding: 12px 20px 5px;
+    color: #8fc7b3;
+    font-size: 10px;
+}
+
+.menu a {
+    display: block;
+    padding: 12px 20px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+}
+
+.menu a:hover, .menu a.active {
+    background: #087455;
+    color: white;
+    border-left-color: #49d5a1;
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+    padding: 18px;
+    border-top: 1px solid #26745e;
+    font-size: 11px;
+}
+
+.main {
+    min-width: 0;
+    flex: 1;
+}
+
+.topbar {
+    height: 55px;
+    padding: 0 25px;
+    background: white;
+    border-bottom: 1px solid #e8eeee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #748580;
+    font-size: 11px;
+}
+
+.topbar .user {
+    color: #263d37;
+}
+
+.content {
+    padding: 25px;
+}
+
+.heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.heading h1 {
+    font-size: 23px;
+    margin: 0 0 7px;
+}
+
+.heading p {
+    color: #82918d;
+    margin: 0;
+    font-size: 12px;
+}
+
+.btn-green {
+    background: #00875a;
+    color: white;
+}
+
+.btn-light {
+    background: white;
+    border: 1px solid #dce5e7;
+    color: #334a44;
+}
+
+.btn-light:hover {
+    background: #eef7f3;
+}
+
+/* TABS */
+.tabs {
+    display: flex;
+    gap: 22px;
+    border-bottom: 1px solid #dce5e7;
+    margin-bottom: 18px;
+}
+
+.tabs a {
+    padding: 10px 0;
+    color: #748580;
+}
+
+.tabs a:first-child {
+    color: #00875a;
+    border-bottom: 2px solid #00875a;
+}
+
+/* FILTERS */
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-bottom: 20px;
+}
+
+.filters input {
+    flex: 1;
+    min-width: 150px;
+}
+
+.filters select {
+    min-width: 100px;
+}
+
+/* CARDS */
+.card {
+    background: white;
+    border: 1px solid #e5ebec;
+    border-radius: 5px;
+    padding: 16px;
+}
+
+.card-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.routes-layout {
+    display: grid;
+    grid-template-columns: 290px minmax(0, 1fr);
+    gap: 15px;
+}
+
+.route-item {
+    padding: 13px 0;
+    border-bottom: 1px solid #edf0f0;
+}
+
+.route-item:last-child {
+    border-bottom: none;
+}
+
+.route-name {
+    color: #00875a;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+.small {
+    color: #81918c;
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    background: #e0f7e9;
+    color: #168653;
+}
+
+.status.orange {
+    background: #fff0d9;
+    color: #b7791f;
+}
+
+.status.gray {
+    background: #edf0f2;
+    color: #65736e;
+}
+
+/* ROUTE MAP */
+.map {
+    height: 400px;
+    position: relative;
+    overflow: hidden;
+    background-color: #f0f2e9;
+    background-image:
+        linear-gradient(90deg, transparent 96%, #ffffff 96%),
+        linear-gradient(transparent 96%, #ffffff 96%);
+    background-size: 65px 55px;
+    border-radius: 4px;
+}
+
+.park {
+    position: absolute;
+    background: #d8e9ce;
+    border-radius: 4px;
+}
+
+.road {
+    position: absolute;
+    height: 3px;
+    background: #e9c98c;
+    transform-origin: left center;
+}
+
+.route-line {
+    position: absolute;
+    height: 3px;
+    background: #00a978;
+    transform-origin: left center;
+}
+
+.pin {
+    position: absolute;
+    width: 19px;
+    height: 19px;
+    background: #00875a;
+    color: white;
+    border: 2px solid white;
+    border-radius: 4px;
+    text-align: center;
+    line-height: 15px;
+    font-weight: bold;
+    font-size: 10px;
+    z-index: 2;
+}
+
+.map-label {
+    position: absolute;
+    color: #88958b;
+    font-size: 10px;
+}
+
+.map-controls {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    display: grid;
+    gap: 4px;
+}
+
+.map-controls button {
+    padding: 7px 12px;
+    color: #203b37;
+    background: white;
+    border: 1px solid #ddd;
+}
+
+/* TRUCK TABLE */
+.table-wrap {
+    overflow-x: auto;
+    background: white;
+    border: 1px solid #e5ebec;
+    border-radius: 5px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: left;
+    white-space: nowrap;
+}
+
+th {
+    background: #f7f9fa;
+    color: #788984;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+th, td {
+    padding: 15px 12px;
+    border-bottom: 1px solid #edf0f0;
+}
+
+td {
+    font-size: 12px;
+}
+
+tbody tr:hover {
+    background: #f7fbf9;
+}
+
+.truck-id {
+    color: #00875a;
+    font-weight: bold;
+}
+
+.driver {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.avatar {
+    width: 27px;
+    height: 27px;
+    background: #dcefe7;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    color: #00734e;
+    font-weight: bold;
+}
+
+.table-bottom {
+    padding: 14px;
+    display: flex;
+    justify-content: space-between;
+    color: #84928e;
+    font-size: 11px;
+    background: white;
+}
+
+@media(max-width: 900px) {
+    .sidebar {
+        width: 155px;
+    }
+
+    .routes-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .content {
+        padding: 16px;
+    }
+}
+
+@media(max-width: 600px) {
+    .dashboard {
+        display: block;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .brand {
+        padding: 15px;
+    }
+
+    .menu {
+        display: flex;
+        overflow-x: auto;
+    }
+
+    .menu-title, .sidebar-bottom {
+        display: none;
+    }
+
+    .menu a {
+        white-space: nowrap;
+        padding: 12px;
+    }
+
+    .topbar {
+        padding: 0 12px;
+    }
+
+    .heading h1 {
+        font-size: 19px;
+    }
+
+    .auth {
+        flex-direction: column;
+        margin: 15px;
+    }
+
+    .auth-left, .auth-right {
+        width: 100%;
+    }
+
+    .auth-left h1 {
+        margin-top: 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div class="page" id="login">
+    <div class="auth">
+        <div class="auth-left">
+            <div class="brand">♻ WasteWise</div>
+            <h1>Waste Management Monitoring System</h1>
+            <p>Better waste management starts here.</p>
+            <div class="truck-art">🚛</div>
+            <p>Manage trucks, drivers, routes, and collection schedules in one place.</p>
+        </div>
+
+        <div class="auth-right">
+            <form class="auth-form" action="#routes">
+                <h2>Welcome Back!</h2>
+                <p>Log in to your WasteWise account.</p>
+
+                <label>Email Address</label>
+                <input type="email" placeholder="Enter your email" required>
+
+                <label>Password</label>
+                <input type="password" placeholder="Enter your password" required>
+
+                <div class="links" style="text-align:right">
+                    <a href="#forgot">Forgot Password?</a>
+                </div>
+
+                <button type="submit">Log In</button>
+
+                <div class="links">
+                    Don't have an account?
+                    <a href="#register">Create Account</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- REGISTER -->
+<div class="page" id="register">
+    <div class="auth">
+        <div class="auth-left">
+            <div class="brand">♻ WasteWise</div>
+            <h1>Better waste management starts here.</h1>
+            <div class="truck-art">🚛</div>
+        </div>
+
+        <div class="auth-right">
+            <form class="auth-form" action="#login">
+                <h2>Create Your Account</h2>
+                <p>Register to access WasteWise.</p>
+
+                <label>Full Name</label>
+                <input type="text" placeholder="Full name" required>
+
+                <label>Email Address</label>
+                <input type="email" placeholder="Email address" required>
+
+                <label>Username</label>
+                <input type="text" placeholder="Username" required>
+
+                <label>Password</label>
+                <input type="password" placeholder="Password" required>
+
+                <button type="submit">Create Account</button>
+
+                <div class="links">
+                    Already registered? <a href="#login">Log In</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- FORGOT PASSWORD -->
+<div class="page" id="forgot">
+    <div class="auth">
+        <div class="auth-left">
+            <div class="brand">♻ WasteWise</div>
+            <h1>Better waste management starts here.</h1>
+        </div>
+        <div class="auth-right">
+            <form class="auth-form" action="#reset">
+                <h2>Forgot Password?</h2>
+                <p>Enter your registered email address.</p>
+                <label>Email Address</label>
+                <input type="email" placeholder="Enter email" required>
+                <button type="submit">Reset Password</button>
+                <div class="links"><a href="#login">Back to Login</a></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- RESET PASSWORD -->
+<div class="page" id="reset">
+    <div class="auth">
+        <div class="auth-left">
+            <div class="brand">♻ WasteWise</div>
+            <h1>Better waste management starts here.</h1>
+        </div>
+        <div class="auth-right">
+            <form class="auth-form" action="#login">
+                <h2>Set a New Password</h2>
+                <p>Enter your new password below.</p>
+                <label>New Password</label>
+                <input type="password" placeholder="New password" required>
+                <label>Confirm Password</label>
+                <input type="password" placeholder="Confirm password" required>
+                <button type="submit">Update Password</button>
+                <div class="links"><a href="#login">Back to Login</a></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- COLLECTION ROUTES DASHBOARD -->
+<div class="page" id="routes">
+<div class="dashboard">
+
+    <aside class="sidebar">
+        <div class="brand">♻ WasteWise</div>
+        <div class="menu-title">MENU</div>
+
+        <nav class="menu">
+            <a href="#routes">▦ &nbsp; Dashboard</a>
+            <a href="#routes" class="active">⌖ &nbsp; Collection Routes</a>
+            <a href="#trucks">▣ &nbsp; Trucks</a>
+            <a href="#records">▤ &nbsp; Collection Record</a>
+            <a href="#analytics">▥ &nbsp; Analytics</a>
+            <a href="#reports">▧ &nbsp; Reports</a>
+            <a href="#notifications">♧ &nbsp; Notifications</a>
+            <a href="#settings">⚙ &nbsp; Settings</a>
+            <a href="#messages">✉ &nbsp; Messages</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="#login">↪ Log out</a>
+            <p>👤 John Doe<br>Administrator</p>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <span>Waste Management Monitoring System</span>
+            <span>⌕ &nbsp; ♧ &nbsp; 👤 &nbsp; John Doe &nbsp; ▾</span>
+        </header>
+
+        <section class="content">
+            <div class="heading">
+                <div>
+                    <h1>Collection Routes</h1>
+                    <p>Plan, track, and manage your collection routes.</p>
+                </div>
+                <button onclick="location.hash='addroute'">+ Create Route</button>
+            </div>
+
+            <div class="tabs">
+                <a href="#routes">All Routes</a>
+                <a href="#activeRoutes">Active Routes</a>
+                <a href="#completedRoutes">Completed</a>
+                <a href="#scheduledRoutes">Scheduled</a>
+            </div>
+
+            <div class="filters">
+                <input type="search" placeholder="⌕  Search routes...">
+                <select>
+                    <option>All Areas</option>
+                    <option>Pasig</option>
+                    <option>Manila</option>
+                    <option>Quezon City</option>
+                </select>
+                <select>
+                    <option>All Status</option>
+                    <option>In Progress</option>
+                    <option>Scheduled</option>
+                    <option>Completed</option>
+                </select>
+                <button class="btn-light" onclick="location.hash='mapview'">⌖ Map View</button>
+                <button class="btn-light" onclick="location.hash='routes'">☷ List View</button>
+            </div>
+
+            <div class="routes-layout">
+                <div class="card">
+                    <div class="card-title">Collection Routes</div>
+
+                    <div class="route-item">
+                        <div class="route-name">Pasig Palengke Route</div>
+                        <div class="small">07:00 AM - 10:00 AM</div>
+                        <div class="small">John Doe · Truck 01</div>
+                        <span class="status">In Progress</span>
+                    </div>
+
+                    <div class="route-item">
+                        <div class="route-name">Plaza Route</div>
+                        <div class="small">08:00 AM - 11:00 AM</div>
+                        <div class="small">Michael Brown · Truck 02</div>
+                        <span class="status">In Progress</span>
+                    </div>
+
+                    <div class="route-item">
+                        <div class="route-name">Barangay Route</div>
+                        <div class="small">09:00 AM - 12:00 PM</div>
+                        <div class="small">David Wilson · Truck 03</div>
+                        <span class="status orange">Scheduled</span>
+                    </div>
+
+                    <div class="route-item">
+                        <div class="route-name">San Joaquin Route</div>
+                        <div class="small">01:00 PM - 04:00 PM</div>
+                        <div class="small">James Davis · Truck 04</div>
+                        <span class="status gray">Completed</span>
+                    </div>
+
+                    <div class="route-item">
+                        <div class="route-name">Palatiw Route</div>
+                        <div class="small">02:00 PM - 05:00 PM</div>
+                        <div class="small">Robert Miller · Truck 05</div>
+                        <span class="status gray">Completed</span>
+                    </div>
+                </div>
+
+                <div class="card" id="mapview">
+                    <div class="card-title">Route Map</div>
+
+                    <div class="map">
+                        <div class="park" style="left:8%;top:10%;width:12%;height:12%"></div>
+                        <div class="park" style="left:44%;top:15%;width:10%;height:10%"></div>
+                        <div class="park" style="left:72%;top:12%;width:12%;height:13%"></div>
+                        <div class="park" style="left:20%;top:52%;width:12%;height:14%"></div>
+                        <div class="park" style="left:53%;top:64%;width:13%;height:13%"></div>
+                        <div class="park" style="left:82%;top:72%;width:10%;height:12%"></div>
+
+                        <div class="map-label" style="left:5%;top:28%">Pasig Palengke</div>
+                        <div class="map-label" style="left:35%;top:40%">Barangay Center</div>
+                        <div class="map-label" style="left:70%;top:45%">Plaza</div>
+                        <div class="map-label" style="left:15%;top:78%">Collection Area</div>
+                        <div class="map-label" style="left:65%;top:85%">Main Road</div>
+
+                        <div class="road" style="left:5%;top:35%;width:90%;transform:rotate(12deg)"></div>
+                        <div class="road" style="left:12%;top:70%;width:80%;transform:rotate(-18deg)"></div>
+                        <div class="road" style="left:35%;top:5%;width:70%;transform:rotate(75deg)"></div>
+
+                        <div class="route-line" style="left:18%;top:23%;width:30%;transform:rotate(35deg)"></div>
+                        <div class="route-line" style="left:42%;top:43%;width:32%;transform:rotate(-25deg)"></div>
+                        <div class="route-line" style="left:65%;top:30%;width:25%;transform:rotate(90deg)"></div>
+                        <div class="route-line" style="left:20%;top:72%;width:45%;transform:rotate(-40deg)"></div>
+
+                        <div class="pin" style="left:16%;top:18%">1</div>
+                        <div class="pin" style="left:43%;top:38%">2</div>
+                        <div class="pin" style="left:70%;top:25%">3</div>
+                        <div class="pin" style="left:63%;top:67%">4</div>
+                        <div class="pin" style="left:25%;top:66%">5</div>
+
+                        <div class="map-controls">
+                            <button onclick="alert('Zoom in map')">+</button>
+                            <button onclick="alert('Zoom out map')">−</button>
+                        </div>
+                    </div>
+
+                    <p class="small">
+                        <span style="color:#00a978">━</span> Active Route
+                        &nbsp; <span style="color:#e9c98c">━</span> Scheduled Route
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+</div>
+
+<!-- TRUCKS DASHBOARD -->
+<div class="page" id="trucks">
+<div class="dashboard">
+
+    <aside class="sidebar">
+        <div class="brand">♻ WasteWise</div>
+        <div class="menu-title">MENU</div>
+
+        <nav class="menu">
+            <a href="#routes">▦ &nbsp; Dashboard</a>
+            <a href="#routes">⌖ &nbsp; Collection Routes</a>
+            <a href="#trucks" class="active">▣ &nbsp; Trucks</a>
+            <a href="#records">▤ &nbsp; Collection Record</a>
+            <a href="#analytics">▥ &nbsp; Analytics</a>
+            <a href="#reports">▧ &nbsp; Reports</a>
+            <a href="#notifications">♧ &nbsp; Notifications</a>
+            <a href="#settings">⚙ &nbsp; Settings</a>
+            <a href="#messages">✉ &nbsp; Messages</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="#login">↪ Log out</a>
+            <p>👤 John Doe<br>Administrator</p>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <span>Waste Management Monitoring System</span>
+            <span>⌕ &nbsp; ♧ &nbsp; 👤 &nbsp; John Doe &nbsp; ▾</span>
+        </header>
+
+        <section class="content">
+            <div class="heading">
+                <div>
+                    <h1>Trucks</h1>
+                    <p>Manage your trucks and their status and performance.</p>
+                </div>
+                <button onclick="location.hash='addtruck'">+ Add Truck</button>
+            </div>
+
+            <div class="card">
+                <div class="heading" style="margin-bottom:15px">
+                    <div class="card-title" style="margin:0">Truck List</div>
+                    <span class="small">8 total trucks</span>
+                </div>
+
+                <div class="filters">
+                    <input type="search" placeholder="⌕  Search by Truck ID or Driver...">
+                    <select>
+                        <option>All Status</option>
+                        <option>Active</option>
+                        <option>Maintenance</option>
+                    </select>
+                    <select>
+                        <option>All Areas</option>
+                        <option>Pasig</option>
+                        <option>Manila</option>
+                    </select>
+                    <button class="btn-light" onclick="window.print()">Export</button>
+                    <button class="btn-light" onclick="alert('Use the search field and status filters to find trucks.')">Filter</button>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Truck ID</th>
+                                <th>Driver Name</th>
+                                <th>Assigned Area</th>
+                                <th>Status</th>
+                                <th>Capacity</th>
+                                <th>Last Inspection</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="truck-id">TRK-001</td>
+                                <td><div class="driver"><span class="avatar">JD</span> John Davis</div></td>
+                                <td>Pasig Palengke</td>
+                                <td><span class="status">Active</span></td>
+                                <td>80%</td>
+                                <td>25 Oct, 2026</td>
+                                <td><a href="#truckdetails">•••</a></td>
+                            </tr>
+                            <tr>
+                                <td class="truck-id">TRK-002</td>
+                                <td><div class="driver"><span class="avatar">MB</span> Michael Brown</div></td>
+                                <td>Plaza Route</td>
+                                <td><span class="status">Active</span></td>
+                                <td>65%</td>
+                                <td>24 Oct, 2026</td>
+                                <td><a href="#truckdetails">•••</a></td>
+                            </tr>
+                            <tr>
+                                <td class="truck-id">TRK-003</td>
+                                <td><div class="driver"><span class="avatar">DW</span> David Wilson</div></td>
+                                <td>San Miguel</td>
+                                <td><span class="status orange">Maintenance</span></td>
+                                <td>—</td>
+                                <td>22 Oct, 2026</td>
+                                <td><a href="#truckdetails">•••</a></td>
+                            </tr>
+                            <tr>
+                                <td class="truck-id">TRK-004</td>
+                                <td><div class="driver"><span class="avatar">JD</span> James Davis</div></td>
+                                <td>San Joaquin</td>
+                                <td><span class="status">Active</span></td>
+                                <td>90%</td>
+                                <td>21 Oct, 2026</td>
+                                <td><a href="#truckdetails">•••</a></td>
+                            </tr>
+                            <tr>
+                                <td class="truck-id">TRK-005</td>
+                                <td><div class="driver"><span class="avatar">RM</span> Robert Miller</div></td>
+                                <td>Palatiw</td>
+                                <td><span class="status">Active</span></td>
+                                <td>72%</td>
+                                <td>21 Oct, 2026</td>
+                                <td><a href="#truckdetails">•••</a></td>
+                            </tr>
+                            <tr>
+                                <td class="truck-id">TRK-006</td>
+                                <td><div class="driver"><span class="avatar">WK</span> William Kelly</div></td>
+                                <td>Rotonda</td>
+                                <td><span class="status">Active</span></td>
+                                <td>50%</td>
+                                <td>20 Oct, 2026</td>
+                                <td><a href="#truckdetails">•••</a></td>
+                            </tr>
+                            <tr>
+                                <td class="truck-id">TRK-007</td>
+                                <td><div class="driver"><span class="avatar">RT</span> Richard Thomas</div></td>
+                                <td>Paco Area</td>
+                                <td><span class="status">Active</span></td>
+                                <td>80%</td>
+                                <td>20 Oct, 2026</td>
+                                <td><a href="#truckdetails">•••</a></td>
+                            </tr>
+                            <tr>
+                                <td class="truck-id">TRK-008</td>
+                                <td><div class="driver"><span class="avatar">DL</span> Daniel Lewis</div></td>
+                                <td>Barangay Center</td>
+                                <td><span class="status orange">Maintenance</span></td>
+                                <td>—</td>
+                                <td>19 Oct, 2026</td>
+                                <td><a href="#truckdetails">•••</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-bottom">
+                    <span>Showing 8 of 8 trucks</span>
+                    <span>Last updated: Today</span>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+</div>
+
+<!-- ADD TRUCK PAGE -->
+<div class="page" id="addtruck">
+    <div class="auth">
+        <div class="auth-left">
+            <div class="brand">♻ WasteWise</div>
+            <h1>Truck Management</h1>
+            <p>Register a garbage collection truck.</p>
+        </div>
+        <div class="auth-right">
+            <form class="auth-form" action="#trucks">
+                <h2>Add New Truck</h2>
+                <label>Truck ID</label>
+                <input type="text" placeholder="e.g. TRK-009" required>
+                <label>Driver Name</label>
+                <input type="text" placeholder="Enter driver name" required>
+                <label>Assigned Area</label>
+                <input type="text" placeholder="Enter assigned area" required>
+                <label>Truck Capacity</label>
+                <input type="number" placeholder="Enter capacity" required>
+                <label>Status</label>
+                <select style="width:100%;padding:10px">
+                    <option>Active</option>
+                    <option>Maintenance</option>
+                </select>
+                <button type="submit">Save Truck</button>
+                <div class="links"><a href="#trucks">Cancel</a></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ADD ROUTE PAGE -->
+<div class="page" id="addroute">
+    <div class="auth">
+        <div class="auth-left">
+            <div class="brand">♻ WasteWise</div>
+            <h1>Collection Route Management</h1>
+            <p>Create and organize garbage collection routes.</p>
+        </div>
+        <div class="auth-right">
+            <form class="auth-form" action="#routes">
+                <h2>Create Collection Route</h2>
+                <label>Route Name</label>
+                <input type="text" placeholder="Enter route name" required>
+                <label>Assigned Area</label>
+                <input type="text" placeholder="Enter collection area" required>
+                <label>Assigned Truck</label>
+                <select style="width:100%;padding:10px">
+                    <option>TRK-001</option>
+                    <option>TRK-002</option>
+                    <option>TRK-003</option>
+                    <option>TRK-004</option>
+                </select>
+                <label>Collection Schedule</label>
+                <input type="date" required>
+                <label>Start Time</label>
+                <input type="time" required>
+                <button type="submit">Save Route</button>
+                <div class="links"><a href="#routes">Cancel</a></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- SIMPLE PLACEHOLDER PAGES -->
+<div class="page" id="records">
+    <div class="content"><h1>Collection Records</h1><p>Collection records will be displayed here.</p><a href="#routes">Back to Collection Routes</a></div>
+</div>
+<div class="page" id="analytics">
+    <div class="content"><h1>Analytics</h1><p>Waste collection analytics will be displayed here.</p><a href="#routes">Back to Collection Routes</a></div>
+</div>
+<div class="page" id="reports">
+    <div class="content"><h1>Reports</h1><p>Waste management reports will be displayed here.</p><a href="#routes">Back to Collection Routes</a></div>
+</div>
+<div class="page" id="notifications">
+    <div class="content"><h1>Notifications</h1><p>Your system notifications will appear here.</p><a href="#routes">Back to Collection Routes</a></div>
+</div>
+<div class="page" id="settings">
+    <div class="content"><h1>Settings</h1><p>Manage your system settings here.</p><a href="#routes">Back to Collection Routes</a></div>
+</div>
+<div class="page" id="messages">
+    <div class="content"><h1>Messages</h1><p>Your messages will appear here.</p><a href="#routes">Back to Collection Routes</a></div>
+</div>
+<div class="page" id="truckdetails">
+    <div class="content"><h1>Truck Details</h1><p>Truck information and actions will appear here.</p><a href="#trucks">Back to Trucks</a></div>
+</div>
+
+</body>
+</html>
