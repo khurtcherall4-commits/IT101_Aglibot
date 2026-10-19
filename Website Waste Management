@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WasteWise - Waste Management System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif
+        }
+        
+        body {
+            margin: 0;
+            background: #f1f6f8;
+            color: #263b35
+        }
+        
+        button {
+            background: #00875a;
+            color: white;
+            border: 0;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold
+        }
+        
+        button:hover {
+            background: #005b43
+        }
+        
+        input,
+        select {
+            padding: 11px;
+            border: 1px solid #d7e0dc;
+            border-radius: 4px;
+            margin: 5px 0;
+            max-width: 100%
+        }
+        
+        a {
+            color: #00875a;
+            text-decoration: none
+        }
+        
+        .page {
+            display: none
+        }
+        
+        .page:target {
+            display: block
+        }
+        
+        body:not(:has(.page:target)) #login {
+            display: block
+        }
+        
+        .container {
+            display: flex;
+            width: 850px;
+            max-width: 95%;
+            min-height: 480px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px #0002
+        }
+        
+        .left {
+            width: 40%;
+            background: #006747;
+            color: white;
+            padding: 30px
+        }
+        
+        .left h2 {
+            font-size: 27px
+        }
+        
+        .left p,
+        .features {
+            font-size: 13px;
+            line-height: 1.8
+        }
+        
+        .right {
+            width: 60%;
+            padding: 30px
+        }
+        
+        .form {
+            max-width: 330px;
+            margin: 20px auto
+        }
+        
+        .form h2 {
+            font-size: 22px
+        }
+        
+        .form p,
+        .links {
+            font-size: 12px;
+            color: #777
+        }
+        
+        .form input {
+            width: 100%
+        }
+        
+        .form button {
+            width: 100%;
+            margin-top: 18px
+        }
+        
+        .links {
+            text-align: center;
+            margin-top: 18px
+        }
+        
+        #dashboard {
+            display: none
+        }
+        
+        aside {
+            background: #005b43;
+            color: white;
+            width: 190px;
+            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0
+        }
+        
+        aside h3 {
+            padding: 15px
+        }
+        
+        aside a {
+            display: block;
+            padding: 15px;
+            color: white
+        }
+        
+        aside a:hover {
+            background: #00875a
+        }
+        
+        main {
+            margin-left: 190px;
+            padding: 20px
+        }
+        
+        header,
+        .card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 6px
+        }
+        
+        section {
+            padding: 10px;
+            scroll-margin-top: 10px
+        }
+        
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 10px
+        }
+        
+        .map {
+            height: 220px;
+            background: #e1ead7;
+            padding: 20px;
+            line-height: 2.5
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white
+        }
+        
+        td,
+        th {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left
+        }
+        
+        .status {
+            color: #00875a;
+            font-weight: bold
+        }
+        
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px
+        }
+        
+        .stat {
+            background: #e4f3ec;
+            padding: 18px;
+            border-radius: 6px
+        }
+        
+        @media(max-width:650px) {
+            .container {
+                flex-direction: column;
+                margin: 15px auto
+            }
+            .left,
+            .right {
+                width: 100%
+            }
+            aside {
+                width: 100%;
+                position: relative;
+                min-height: auto
+            }
+            aside a {
+                display: inline-block;
+                padding: 10px
+            }
+            main {
+                margin-left: 0;
+                padding: 10px
+            }
+            .layout,
+            .stat-grid {
+                grid-template-columns: 1fr
+            }
+            table {
+                font-size: 12px
+            }
+            td,
+            th {
+                padding: 7px
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LOGIN AND ACCOUNT PAGES -->
+    <div id="auth">
+        <div class="container">
+            <div class="left">
+                <h2>Better waste management starts here.</h2>
+                <p>Manage garbage collection and help create a cleaner and greener community.</p>
+                <div class="features">
+                    ✓ Organized waste collection<br> ✓ Monitor garbage truck operations<br> ✓ Manage schedules and routes<br> ✓ Keep collection records
+                </div>
+            </div>
+
+            <div class="right">
+
+                <div class="page" id="login">
+                    <div class="form">
+                        <h2>Welcome Back!</h2>
+                        <p>Log in to your WasteWise account.</p>
+                        <form onsubmit="return loginUser(event)">
+                            <label>Email Address</label>
+                            <input type="email" id="email" placeholder="Enter your email" required>
+                            <label>Password</label>
+                            <input type="password" id="password" placeholder="Enter your password" required>
+                            <div class="links" style="text-align:right">
+                                <a href="#forgot">Forgot Password?</a>
+                            </div>
+                            <button type="submit">Log In</button>
+                        </form>
+                        <div class="links">Don't have an account? <a href="#register">Create Account</a></div>
+                    </div>
+                </div>
+
+                <div class="page" id="register">
+                    <div class="form">
+                        <h2>Create Your Account</h2>
+                        <p>Join WasteWise to manage waste collection.</p>
+                        <form onsubmit="return registerUser(event)">
+                            <label>Full Name</label>
+                            <input placeholder="Enter your full name" required>
+                            <label>Email Address</label>
+                            <input type="email" placeholder="Enter your email" required>
+                            <label>Username</label>
+                            <input placeholder="Choose a username" required>
+                            <label>Password</label>
+                            <input type="password" id="newpass" placeholder="Create a password" required>
+                            <label>Confirm Password</label>
+                            <input type="password" id="confirmpass" placeholder="Confirm password" required>
+                            <button type="submit">Create Account</button>
+                        </form>
+                        <div class="links"><a href="#login">Back to Login</a></div>
+                    </div>
+                </div>
+
+                <div class="page" id="forgot">
+                    <div class="form">
+                        <h2>Forgot Password?</h2>
+                        <p>Enter your registered email address.</p>
+                        <form onsubmit="return forgotPassword(event)">
+                            <input type="email" id="resetemail" placeholder="Enter your email" required>
+                            <button type="submit">Reset Password</button>
+                        </form>
+                        <div class="links"><a href="#login">Back to Login</a></div>
+                    </div>
+                </div>
+
+                <div class="page" id="reset">
+                    <div class="form">
+                        <h2>Set a New Password</h2>
+                        <p>Enter your new password below.</p>
+                        <form onsubmit="return updatePassword(event)">
+                            <label>New Password</label>
+                            <input type="password" id="newpassword" required>
+                            <label>Confirm New Password</label>
+                            <input type="password" id="confirmnewpassword" required>
+                            <button type="submit">Update Password</button>
+                        </form>
+                        <div class="links"><a href="#login">Back to Login</a></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- WASTEWISE DASHBOARD -->
+    <div id="dashboard">
+        <aside>
+            <h3>♻ WasteWise</h3>
+            <a href="#home">Dashboard</a>
+            <a href="#routes">Collection Routes</a>
+            <a href="#trucks">Trucks</a>
+            <a href="#records">Collection Records</a>
+            <a href="#reports">Reports</a>
+            <a href="#" onclick="logout();return false">Log Out</a>
+        </aside>
+
+        <main>
+            <header>Waste Management Monitoring System</header>
+
+            <section id="home">
+                <h2>Dashboard Overview</h2>
+                <div class="stat-grid">
+                    <div class="stat">
+                        <h3 id="truckcount">3</h3>Total Trucks</div>
+                    <div class="stat">
+                        <h3>2</h3>Active Trucks</div>
+                    <div class="stat">
+                        <h3 id="recordcount">0</h3>Collection Records</div>
+                </div>
+                <div class="card">
+                    <h3>Welcome to WasteWise!</h3>
+                    <p>Monitor garbage trucks, collection schedules, routes, and daily operations.</p>
+                </div>
+            </section>
+
+            <section id="routes">
+                <h2>Collection Routes</h2>
+                <input id="routesearch" placeholder="Search routes" oninput="filterRoutes()">
+                <select id="area">
+<option value="">All Areas</option>
+<option>Pasig Palengke</option><option>Palatiw</option>
+<option>Bambang</option><option>Palatiw</option>
+</select>
+                <button onclick="createRoute()">+ Create Route</button>
+                <div class="layout">
+                    <div class="card">
+                        <h3>Route List</h3>
+                        <div id="routelist">
+                            <p>Pasig Palengke Route - Active</p>
+                            <p>Bambang Route - Active</p>
+                            <p>Barangay Route - Scheduled</p>
+                            <p>Palatiw Route - Completed</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Route Map</h3>
+                        <div class="map">📍 Stop 1 ━━━━━ 📍 Stop 2<br> 　　　　┃
+                            <br> 📍 Stop 4 ━━━━━ 📍 Stop 3</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="trucks">
+                <h2>Trucks</h2>
+                <input id="trucksearch" placeholder="Search truck or driver" oninput="filterTrucks()">
+                <button onclick="addTruck()">+ Add Truck</button>
+                <div class="card">
+                    <table id="trucktable">
+                        <thead>
+                            <tr>
+                                <th>Truck ID</th>
+                                <th>Driver</th>
+                                <th>Area</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>TRK-001</td>
+                                <td>John Davis</td>
+                                <td>Pasig Palengke</td>
+                                <td class="status">Active</td>
+                            </tr>
+                            <tr>
+                                <td>TRK-002</td>
+                                <td>Poy Poy</td>
+                                <td>Bambang</td>
+                                <td class="status">Active</td>
+                            </tr>
+                            <tr>
+                                <td>TRK-003</td>
+                                <td>Tsarles</td>
+                                <td>Pibag Buhatan</td>
+                                <td>Maintenance</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="records">
+                <h2>Collection Records</h2>
+                <div class="card">
+                    <input id="recordarea" placeholder="Collection area">
+                    <input id="recordtruck" placeholder="Truck ID">
+                    <input id="recorddate" type="date">
+                    <button onclick="addRecord()">Add Record</button>
+                </div>
+                <div class="card">
+                    <table id="recordtable">
+                        <thead>
+                            <tr>
+                                <th>Area</th>
+                                <th>Truck ID</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="reports">
+                <h2>Reports</h2>
+                <div class="card">
+                    <h3>Collection Summary</h3>
+                    <p>Total Trucks: <span id="reporttrucks">3</span></p>
+                    <p>Collection Records: <span id="reportrecords">0</span></p>
+                    <button onclick="window.print()">Print Report</button>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+
+    <script>
+        // Demo credentials
+        let validEmail = "khurtjared@gmail.com";
+        let validPassword = "pcc2026";
+
+        function loginUser(event) {
+            event.preventDefault();
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+
+            if (email === validEmail && password === validPassword) {
+                document.getElementById("auth").style.display = "none";
+                document.getElementById("dashboard").style.display = "block";
+                window.scrollTo(0, 0);
+                alert("Login successful! Welcome to WasteWise.");
+            } else {
+                alert("Invalid email or password!");
+            }
+            return false;
+        }
+
+        function logout() {
+            document.getElementById("dashboard").style.display = "none";
+            document.getElementById("auth").style.display = "block";
+            document.getElementById("email").value = "";
+            document.getElementById("password").value = "";
+            location.hash = "login";
+            window.scrollTo(0, 0);
+        }
+
+        function registerUser(event) {
+            event.preventDefault();
+            if (document.getElementById("newpass").value !==
+                document.getElementById("confirmpass").value) {
+                alert("Passwords do not match!");
+                return false;
+            }
+            alert("Demo registration complete. Use the provided demo login credentials.");
+            location.hash = "login";
+            return false;
+        }
+
+        function forgotPassword(event) {
+            event.preventDefault();
+            if (document.getElementById("resetemail").value !== validEmail) {
+                alert("Email not found!");
+                return false;
+            }
+            alert("Demo reset requested. You can now set a new password.");
+            location.hash = "reset";
+            return false;
+        }
+
+        function updatePassword(event) {
+            event.preventDefault();
+            let p = document.getElementById("newpassword").value;
+            let c = document.getElementById("confirmnewpassword").value;
+            if (p !== c) {
+                alert("Passwords do not match!");
+                return false;
+            }
+            validPassword = p;
+            alert("Password updated for this session.");
+            location.hash = "login";
+            return false;
+        }
+
+        function createRoute() {
+            let name = prompt("Enter route name:");
+            if (name) {
+                let p = document.createElement("p");
+                p.textContent = name + " - Scheduled";
+                document.getElementById("routelist").appendChild(p);
+                alert("Route added!");
+            }
+        }
+
+        function filterRoutes() {
+            let q = document.getElementById("routesearch").value.toLowerCase();
+            document.querySelectorAll("#routelist p").forEach(p => {
+                p.style.display = p.textContent.toLowerCase().includes(q) ? "" : "none";
+            });
+        }
+
+        function addTruck() {
+            let id = prompt("Enter Truck ID:");
+            if (!id) return;
+            let driver = prompt("Enter driver name:");
+            if (!driver) return;
+            let area = prompt("Enter assigned area:");
+            if (!area) return;
+            let status = prompt("Enter status (Active/Maintenance):") || "Active";
+            let row = document.querySelector("#trucktable tbody").insertRow();
+            [id, driver, area, status].forEach((value, i) => {
+                let cell = row.insertCell();
+                cell.textContent = value;
+                if (i === 3 && value.toLowerCase() === "active") cell.className = "status";
+            });
+            updateCounts();
+        }
+
+        function filterTrucks() {
+            let q = document.getElementById("trucksearch").value.toLowerCase();
+            document.querySelectorAll("#trucktable tbody tr").forEach(row => {
+                row.style.display = row.textContent.toLowerCase().includes(q) ? "" : "none";
+            });
+        }
+
+        function addRecord() {
+            let area = document.getElementById("recordarea").value;
+            let truck = document.getElementById("recordtruck").value;
+            let date = document.getElementById("recorddate").value;
+            if (!area || !truck || !date) {
+                alert("Please complete all record fields.");
+                return;
+            }
+            let row = document.querySelector("#recordtable tbody").insertRow();
+            [area, truck, date].forEach(value => row.insertCell().textContent = value);
+            document.getElementById("recordarea").value = "";
+            document.getElementById("recordtruck").value = "";
+            document.getElementById("recorddate").value = "";
+            updateCounts();
+            alert("Collection record added!");
+        }
+
+        function updateCounts() {
+            let trucks = document.querySelectorAll("#trucktable tbody tr").length;
+            let records = document.querySelectorAll("#recordtable tbody tr").length;
+            document.getElementById("truckcount").textContent = trucks;
+            document.getElementById("recordcount").textContent = records;
+            document.getElementById("reporttrucks").textContent = trucks;
+            document.getElementById("reportrecords").textContent = records;
+        }
+    </script>
+
+</body>
+
+
+</html>
